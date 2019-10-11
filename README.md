@@ -10,3 +10,9 @@ Droids will report their status every `UPDATE_INTERVAL` milliseconds, and the ma
 
 ## License
 [GNU GPL V3](https://github.com/daveflanagan-fi/DroidController/blob/master/LICENSE)
+
+## Board
+
+All the board gerber files can be found in the `Board` directory
+
+<img src="https://raw.githubusercontent.com/daveflanagan-fi/DroidController/master/Board/top.png" width="300" height="300"><img src="https://raw.githubusercontent.com/daveflanagan-fi/DroidController/master/Board/bottom.png" width="300" height="300">
