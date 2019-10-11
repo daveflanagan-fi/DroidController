@@ -10,10 +10,11 @@ void Master::Update() {
     _network->peek(header);
     
     switch(header.type){
-      case 65: // Droid Ping
+      case MSG_PING:
         DroidData data;
         _network->read(header, &data, sizeof(DroidData));
-        Serial.print("{\"type\":65");
+        Serial.print("{\"type\":");
+        Serial.print(MSG_PING);
         Serial.print(",\"id\":");
         Serial.print(header.from_node);
         Serial.print(",\"latitude\":");
@@ -29,6 +30,8 @@ void Master::Update() {
       default:
         Serial.print("{\"type\":");
         Serial.print(header.type);
+        Serial.print(",\"id\":");
+        Serial.print(header.from_node);
         Serial.println("}");
         break;
     }
@@ -36,7 +39,8 @@ void Master::Update() {
 
   if (millis() - _lastList > 5000){
     _lastList = millis();
-    Serial.print("{\"type\":1");
+    Serial.print("{\"type\":");
+    Serial.print(MSG_ADDR);
     for (int i = 0; i < _mesh->addrListTop; i++){
       Serial.print(",");
       Serial.print(_mesh->addrList[i].nodeID);

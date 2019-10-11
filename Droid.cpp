@@ -54,7 +54,7 @@ void Droid::Update() {
     switch(header.type){
       default:
         break;
-      case 66: // New waypoint
+      case MSG_ADD_WAYPOINT:
       {
         Point point;
         _network->read(header, &point, sizeof(point));
@@ -66,7 +66,7 @@ void Droid::Update() {
         }
         break;
       }
-      case 67: // Replace waypoint
+      case MSG_REP_WAYPOINT:
       {
         Point point;
         _network->read(header, &point, sizeof(point));
@@ -85,13 +85,8 @@ void Droid::FetchData() {
 }
 
 void Droid::Control() {  
-  if (_waypoints[0] == NULL) {
-    _left = 0;
-    _right = 0;
-    _rightMotor.Set(0, false);
-    _leftMotor.Set(0, false);
+  if (_waypoints[0] == NULL)
     return;
-  }
 
   double distance = calculateDistance(_data.Latitude, _data.Longitude, _waypoints[0]->Latitude, _waypoints[0]->Longitude);
   if (distance < TURNING_RADIUS) {
@@ -101,8 +96,14 @@ void Droid::Control() {
     _waypoints[MAX_WAYPOINTS - 1] = NULL;
   }
 
-  if (_waypoints[0] == NULL)
+  if (_waypoints[0] == NULL) {
+    _mesh->write(0, MSG_COMPLETE, sizeof(0));
+    _left = 0;
+    _right = 0;
+    _rightMotor.Set(0, false);
+    _leftMotor.Set(0, false);
     return; // Finished waypoint list
+  }
 
   double desiredHeading = calculateHeading(_data.Latitude, _data.Longitude, _waypoints[0]->Latitude, _waypoints[0]->Longitude);
   
@@ -118,6 +119,15 @@ void Droid::Control() {
     _leftMotor.Set(255, false);
   }
 #else
+  // Handle 359 -> 0 and 0 -> 359 degrees
+  double heading = _data.Heading;
+  if (abs(desiredHeading - heading) > 180) {
+    if (desiredHeading < heading)
+      desiredHeading += 360;
+    else
+      heading += 360;
+  }
+  
   uint8_t s = _pidSpeed.step(TARGET_SPEED, _data.Speed);
   _left += s;
   _right += s;
@@ -132,7 +142,7 @@ void Droid::Control() {
 }
 
 void Droid::Ping() {  
-  if (!_mesh->write(&_data, 65, sizeof(_data))) {
+  if (!_mesh->write(&_data, MSG_PING, sizeof(_data))) {
     if (!_mesh->checkConnection()) {
       _mesh->renewAddress();
     }

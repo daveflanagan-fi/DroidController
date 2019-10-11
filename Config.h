@@ -19,4 +19,10 @@
 #define EN1 A1
 #define EN2 A0
 
+#define MSG_ADDR 1
+#define MSG_PING 65
+#define MSG_ADD_WAYPOINT 66
+#define MSG_REP_WAYPOINT 67
+#define MSG_COMPLETE 68
+
 #endif
