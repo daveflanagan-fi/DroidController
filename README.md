@@ -34,6 +34,7 @@ All the board gerber files can be found in the `Board` directory
 - IC2 L293D
 - U1 Atmega328 dip28
 
+### Connectors
 - J1 2 pins screw terminal 0.137in spacing
 - J2 2 pins screw terminal 0.137in spacing
 - J3 4 pins male header 0.1in spacing
