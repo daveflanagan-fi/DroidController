@@ -34,6 +34,7 @@ void Droid::Setup() {
   _pidHeading.configure(0.1, 0.5, 0.1, 10, 8, false);
 
   _gps.begin(GPS_BAUDRATE);
+  _current = 0;
   
 #if BOARD_VERSION == 1
   _leftMotor.Setup(IN1, IN2, 2);
@@ -86,6 +87,7 @@ void Droid::Update() {
           _waypoints[i] = NULL;
         }
         _waypoints[0] = &point;
+        _current = 0;
         break;
       }
     }
@@ -96,35 +98,36 @@ void Droid::FetchData() {
   while (_gps.ready()) {
     _data.Latitude = _gps.lon / 10000000.0;
     _data.Longitude = _gps.lat / 10000000.0;
-    _data.Speed = _gps.gSpeed * 0.0036;
+    _data.Speed = _gps.gSpeed * 0.0036; // Convert mm/s to KPH
     _data.Heading = _gps.heading / 100000.0;
-    _data.Altitude = _gps.hMSL / 100.0;
+    _data.Altitude = _gps.hMSL / 100.0; // Convert mm to m
     _data.NumSatellites  = _gps.numSV;
+    _data.Accuracy = _gps.pDOP;
   }
 }
 
-void Droid::Control() {  
-  if (_waypoints[0] == NULL)
+void Droid::Control() {
+  if (_current >= MAX_WAYPOINTS || _waypoints[_current] == NULL)
     return;
 
-  double distance = calculateDistance(_data.Latitude, _data.Longitude, _waypoints[0]->Latitude, _waypoints[0]->Longitude);
+  double distance = calculateDistance(_data.Latitude, _data.Longitude, _waypoints[_current]->Latitude, _waypoints[_current]->Longitude);
+  _data.Distance = distance;
   if (distance < TURNING_RADIUS) {
-    for (int i = 0; i < MAX_WAYPOINTS - 1; i++) {
-      _waypoints[i] = _waypoints[i + 1];
-    }
-    _waypoints[MAX_WAYPOINTS - 1] = NULL;
+    Serial.println("Moving to next waypoint...");
+    _current++;
   }
 
-  if (_waypoints[0] == NULL) {
-    _mesh->write(0, MSG_COMPLETE, sizeof(0));
+  if (_current >= MAX_WAYPOINTS || _waypoints[_current] == NULL) {
+    Serial.println("Mission complete, halting...");
+    _mesh->write(0, 0, MSG_COMPLETE, sizeof(0));
     _left = 0;
     _right = 0;
     _rightMotor.Set(0, false);
     _leftMotor.Set(0, false);
-    return; // Finished waypoint list
+    return;
   }
 
-  double desiredHeading = calculateHeading(_data.Latitude, _data.Longitude, _waypoints[0]->Latitude, _waypoints[0]->Longitude);
+  double desiredHeading = calculateHeading(_data.Latitude, _data.Longitude, _waypoints[_current]->Latitude, _waypoints[_current]->Longitude);
   
 #if BOARD_VERSION == 1
   if (desiredHeading < _data.Heading) {
@@ -161,9 +164,12 @@ void Droid::Control() {
 }
 
 void Droid::Ping() {  
-  if (!_mesh->write(&_data, MSG_PING, sizeof(_data))) {
+  if (!_mesh->write(0, &_data, MSG_PING, sizeof(_data))) {
+    Serial.println("Write fail");
     if (!_mesh->checkConnection()) {
+      Serial.println("Renewing address");
       _mesh->renewAddress();
-    }
+    } else
+      Serial.println("Test OK");
   }
 }

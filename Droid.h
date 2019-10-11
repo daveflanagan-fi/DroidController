@@ -28,6 +28,7 @@ class Droid : public Object {
     uint32_t _lastSend;
     uint32_t _lastUpdate;
     Point* _waypoints[MAX_WAYPOINTS];
+    uint16_t _current;
 
     Motor _leftMotor;
     Motor _rightMotor;

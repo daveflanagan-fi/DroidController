@@ -7,12 +7,14 @@ struct Point {
 };
 
 struct DroidData {
+  double Distance;
   double Latitude;
   double Longitude;
   double Heading;
   double Speed;
   double Altitude;
   unsigned char NumSatellites;
+  unsigned short Accuracy;
 };
 
 #endif
