@@ -1,7 +1,9 @@
 #ifndef __CONFIG_H__
 #define __CONFIG_H__
 
-#define BOARD_VERSION 2
+#define BOARD_VERSION_MAJOR 1
+#define BOARD_VERSION_MINOR 2
+#define BOARD_VERSION_REVISION 1
 
 // Radio variables
 #define RADIO_CE 5
@@ -12,6 +14,7 @@
 #define TURNING_RADIUS 30
 #define TARGET_SPEED 10
 #define UPDATE_INTERVAL 1000
+#define CONTROL_INTERVAL 100
 #define MAX_WAYPOINTS 20
 
 // GPS settings

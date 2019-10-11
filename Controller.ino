@@ -22,7 +22,7 @@ Object* obj;
 
 void setup() {
   Serial.begin(9600);
-  if (BOARD_VERSION <= 1)
+  if (BOARD_VERSION_MAJOR <= 1 && BOARD_VERSION_MINOR <= 1)
     Serial.println("Unsupported board version");
     
   if (NODE_ID == 0)

@@ -41,7 +41,7 @@ void Droid::Setup() {
 void Droid::Update() {
   Object::Update();
 
-  if (millis() - _lastUpdate >= 100) {
+  if (millis() - _lastUpdate >= CONTROL_INTERVAL) {
     _lastUpdate = millis();
     FetchData();
     Control();
