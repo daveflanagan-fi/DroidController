@@ -1,7 +1,7 @@
 #ifndef __CONFIG_H__
 #define __CONFIG_H__
 
-#define BOARD_VERSION 1
+#define BOARD_VERSION 2
 
 #define RADIO_CE 5
 #define RADIO_CS 6
@@ -11,6 +11,10 @@
 #define TARGET_SPEED 10
 #define UPDATE_INTERVAL 1000
 #define MAX_WAYPOINTS 5
+#define MAGNETIC_DECLINATION 0.21
+#define GPS_BAUDRATE 9600
+#define GPS_RX 3
+#define GPS_TX 2
 
 #define IN1 4
 #define IN2 7

@@ -1,6 +1,12 @@
 #include "Droid.h"
 #include "Math.h"
 
+#include <SoftwareSerial.h>
+#include <UbxGpsNavPvt.h>
+
+SoftwareSerial _ss(GPS_TX, GPS_RX);
+UbxGpsNavPvt<SoftwareSerial> _gps(_ss);
+
 void Motor::Setup(int in1, int in2, int en) {
   _in1 = in1;
   _in2 = in2;
@@ -12,7 +18,11 @@ void Motor::Setup(int in1, int in2, int en) {
 }
 
 void Motor::Set(int speed, boolean reverse) {
+#if BOARD_VERSION == 1
   digitalWrite(_en, speed);
+#else
+  analogWrite(_en, speed);
+#endif
   digitalWrite(_in1, !reverse);
   digitalWrite(_in2, reverse);
 }
@@ -22,6 +32,8 @@ void Droid::Setup() {
 
   _pidSpeed.configure(0.1, 0.5, 0.1, 10, 8, false);
   _pidHeading.configure(0.1, 0.5, 0.1, 10, 8, false);
+
+  _gps.begin(GPS_BAUDRATE);
   
 #if BOARD_VERSION == 1
   _leftMotor.Setup(IN1, IN2, 2);
@@ -81,7 +93,14 @@ void Droid::Update() {
 }
 
 void Droid::FetchData() {
-  
+  while (_gps.ready()) {
+    _data.Latitude = _gps.lon / 10000000.0;
+    _data.Longitude = _gps.lat / 10000000.0;
+    _data.Speed = _gps.gSpeed * 0.0036;
+    _data.Heading = _gps.heading / 100000.0;
+    _data.Altitude = _gps.hMSL / 100.0;
+    _data.NumSatellites  = _gps.numSV;
+  }
 }
 
 void Droid::Control() {  

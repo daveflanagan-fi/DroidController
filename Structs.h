@@ -11,6 +11,8 @@ struct DroidData {
   double Longitude;
   double Heading;
   double Speed;
+  double Altitude;
+  unsigned char NumSatellites;
 };
 
 #endif
