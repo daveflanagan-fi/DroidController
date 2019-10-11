@@ -7,6 +7,7 @@ struct Point {
 };
 
 struct DroidData {
+  unsigned char Battery;
   double Distance;
   double Latitude;
   double Longitude;

@@ -95,6 +95,15 @@ void Droid::Update() {
 }
 
 void Droid::FetchData() {
+  int sensorValue = analogRead(VD_PIN);
+  _data.Battery = map(
+    sensorValue * (5.0 / 1024) * ((VD_R1 + VD_R2) / VD_R2),
+    BATT_MIN,
+    BATT_MAX,
+    0,
+    100
+  );
+  
   while (_gps.ready()) {
     _data.Latitude = _gps.lon / 10000000.0;
     _data.Longitude = _gps.lat / 10000000.0;

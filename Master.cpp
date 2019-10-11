@@ -55,6 +55,8 @@ void Master::Update() {
         Serial.print(MSG_PING);
         Serial.print(",\"id\":");
         Serial.print(header.from_node);
+        Serial.print(",\"battery\":");
+        Serial.print(data.Battery);
         Serial.print(",\"latitude\":");
         Serial.print(data.Latitude);
         Serial.print(",\"longitude\":");

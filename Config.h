@@ -16,6 +16,13 @@
 #define GPS_RX 3
 #define GPS_TX 2
 
+#define VD_PIN A2
+#define VD_R1 47000.0
+#define VD_R2 33000.0
+
+#define BATT_MIN 10
+#define BATT_MAX 12.6
+
 #define IN1 4
 #define IN2 7
 #define IN3 8
