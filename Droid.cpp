@@ -18,11 +18,7 @@ void Motor::Setup(int in1, int in2, int en) {
 }
 
 void Motor::Set(int speed, boolean reverse) {
-#if BOARD_VERSION == 1
-  digitalWrite(_en, speed);
-#else
   analogWrite(_en, speed);
-#endif
   digitalWrite(_in1, !reverse);
   digitalWrite(_in2, reverse);
 }
@@ -36,15 +32,10 @@ void Droid::Setup() {
   _gps.begin(GPS_BAUDRATE);
   _current = 0;
   
-#if BOARD_VERSION == 1
-  _leftMotor.Setup(IN1, IN2, 2);
-  _rightMotor.Setup(IN3, IN4, 2);
-#else
   _leftMotor.Setup(IN1, IN2, EN1);
   _rightMotor.Setup(IN3, IN4, EN2);
   _left = 0;
   _right = 0;
-#endif
 }
 
 void Droid::Update() {
@@ -138,18 +129,6 @@ void Droid::Control() {
 
   double desiredHeading = calculateHeading(_data.Latitude, _data.Longitude, _waypoints[_current]->Latitude, _waypoints[_current]->Longitude);
   
-#if BOARD_VERSION == 1
-  if (desiredHeading < _data.Heading) {
-    _rightMotor.Set(255, true);
-    _leftMotor.Set(255, false);
-  } else if (desiredHeading > _data.Heading) {
-    _rightMotor.Set(255, false);
-    _leftMotor.Set(255, true);
-  } else {
-    _rightMotor.Set(255, false);
-    _leftMotor.Set(255, false);
-  }
-#else
   // Handle 359 -> 0 and 0 -> 359 degrees
   double heading = _data.Heading;
   if (abs(desiredHeading - heading) > 180) {
@@ -169,7 +148,6 @@ void Droid::Control() {
 
   _leftMotor.Set(abs(_left), _left < 0);
   _rightMotor.Set(abs(_right), _right < 0);
-#endif
 }
 
 void Droid::Ping() {  

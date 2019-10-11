@@ -21,6 +21,10 @@
 Object* obj;
 
 void setup() {
+  Serial.begin(9600);
+  if (BOARD_VERSION <= 1)
+    Serial.println("Unsupported board version");
+    
   if (NODE_ID == 0)
     obj = new Master();
   else
