@@ -29,6 +29,7 @@ class Droid : public Object {
     uint32_t _lastUpdate;
     Point* _waypoints[MAX_WAYPOINTS];
     uint16_t _current;
+    Accessory* _accessories[MAX_ACCESSORIES];
 
     Motor _leftMotor;
     Motor _rightMotor;
@@ -40,6 +41,8 @@ class Droid : public Object {
   public:
     virtual void Setup();
     virtual void Update();
+
+    void AddAccessory(Accessory* accessory);
 };
 
 #endif

@@ -36,6 +36,11 @@ void Droid::Setup() {
   _rightMotor.Setup(IN3, IN4, EN2);
   _left = 0;
   _right = 0;
+
+  for (int i = 0; i < MAX_ACCESSORIES; i++)
+    _accessories[i] = NULL;
+  for (int i = 0; i < MAX_WAYPOINTS; i++)
+    _waypoints[i] = NULL;
 }
 
 void Droid::Update() {
@@ -107,6 +112,11 @@ void Droid::FetchData() {
 }
 
 void Droid::Control() {
+  for (int i = 0; i < MAX_ACCESSORIES; i++) {
+    if (_accessories[i] != NULL)
+      _accessories[i]->Update(_left, _right, &_data);
+  }
+  
   if (_current >= MAX_WAYPOINTS || _waypoints[_current] == NULL)
     return;
 
@@ -159,4 +169,17 @@ void Droid::Ping() {
     } else
       Serial.println("Test OK");
   }
+}
+
+void Droid::AddAccessory(Accessory* accessory) {
+  bool added = false;
+  for (int i = 0; i < MAX_ACCESSORIES; i++) {
+    if (_accessories[i] == NULL) {
+      _accessories[i] = accessory;
+      added = true;
+      break;
+    }
+  }
+  if (!added)
+    Serial.println("Unable to add new accessory, try increasing MAX_ACCESSORIES");
 }

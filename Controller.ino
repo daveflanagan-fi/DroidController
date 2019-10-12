@@ -17,6 +17,7 @@
 #include "Droid.h"
 #include "Master.h"
 #include "Config.h"
+#include "SteeringServo.h"
 
 Object* obj;
 
@@ -27,8 +28,11 @@ void setup() {
     
   if (NODE_ID == 0)
     obj = new Master();
-  else
+  else {
     obj = new Droid();
+    // Todo: Impliment better way to add these
+    ((Droid*)obj)->AddAccessory(new SteeringServo(9));
+  }
   obj->Setup();
 }
 
