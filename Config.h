@@ -10,13 +10,16 @@
 #define RADIO_CS 6
 #define NODE_ID 1
 
-// Droid contro charactericstics
+// Droid control charactericstics
 #define TURNING_RADIUS 30
 #define TARGET_SPEED 10
 #define UPDATE_INTERVAL 1000
 #define CONTROL_INTERVAL 100
 #define MAX_WAYPOINTS 20
 #define MAX_ACCESSORIES 5
+
+// Accessories -1 is disabled, any other number is connected pin
+#define STEERING_SERVO 9
 
 // GPS settings
 #define MAGNETIC_DECLINATION 0.21

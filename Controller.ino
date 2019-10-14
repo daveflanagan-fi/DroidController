@@ -1,4 +1,3 @@
-
 /*
   Copyright (c) 2019,Dave Flanagan
   This library is free software; you can redistribute it and/or
@@ -17,7 +16,7 @@
 #include "Droid.h"
 #include "Master.h"
 #include "Config.h"
-#include "SteeringServo.h"
+#include "Accessories.h"
 
 Object* obj;
 
@@ -30,8 +29,10 @@ void setup() {
     obj = new Master();
   else {
     obj = new Droid();
-    // Todo: Impliment better way to add these
-    ((Droid*)obj)->AddAccessory(new SteeringServo(9));
+    
+    #if STEERING_SERVO != -1
+      ((Droid*)obj)->AddAccessory(new SteeringServo(STEERING_SERVO));
+    #endif
   }
   obj->Setup();
 }
