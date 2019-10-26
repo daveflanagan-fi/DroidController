@@ -6,7 +6,7 @@ Arduino software to control a droid with 2 motors connected to an RF24 mesh netw
 
 Impliment a class inheriting Droid and add some components
 
-```
+```C++
 #ifndef __TANK_H__
 #define __TANK_H__
 
@@ -22,7 +22,7 @@ public:
 #endif
 ```
 
-```
+```C++
 #include "Tank.h"
 
 Tank::Tank(int nodeId)
