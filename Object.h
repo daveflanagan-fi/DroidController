@@ -1,7 +1,7 @@
 #ifndef __OBJECT_H__
 #define __OBJECT_H__
 
-#include "Components/Component.h"
+#include "Component.h"
 #include <RF24Mesh.h>
 #include <RF24Network.h>
 #include <RF24.h>

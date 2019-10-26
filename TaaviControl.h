@@ -21,7 +21,7 @@
 #include "Droid.h"
 #include "MasterNode.h"
 
-#include "Components/Motor.h"
-#include "Components/SteeringServo.h"
+#include "Motor.h"
+#include "SteeringServo.h"
 
 #endif

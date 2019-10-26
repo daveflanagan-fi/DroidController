@@ -8,7 +8,6 @@
 
 #include "Object.h"
 #include "Structs.h"
-#include "Components/Component.h"
 
 class Droid : public Object
 {
