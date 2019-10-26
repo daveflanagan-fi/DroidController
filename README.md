@@ -6,7 +6,7 @@ Arduino software to control a droid with 2 motors connected to an RF24 mesh netw
 
 Impliment a class inheriting Droid and add some components
 
-`
+```
 #ifndef __TANK_H__
 #define __TANK_H__
 
@@ -20,9 +20,9 @@ public:
 };
 
 #endif
-`
+```
 
-`
+```
 #include "Tank.h"
 
 Tank::Tank(int nodeId)
@@ -37,7 +37,7 @@ void Tank::Setup()
     AddComponent(new Motor(4, 7, 1, 0));
     AddComponent(new Motor(8, 10, 2, 1));
 }
-`
+```
 
 ## License
 [GNU GPL V3](https://github.com/daveflanagan-fi/DroidController/blob/master/LICENSE)
