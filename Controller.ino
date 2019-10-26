@@ -13,30 +13,23 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#include "Droid.h"
+#include "Tank.h"
 #include "Master.h"
 #include "Config.h"
-#include "Accessories.h"
 
-Object* obj;
+Object *obj;
 
-void setup() {
+void setup()
+{
   Serial.begin(9600);
-  if (BOARD_VERSION_MAJOR <= 1 && BOARD_VERSION_MINOR <= 1)
-    Serial.println("Unsupported board version");
-    
+
   if (NODE_ID == 0)
     obj = new Master();
-  else {
-    obj = new Droid();
-    
-    #if STEERING_SERVO != -1
-      ((Droid*)obj)->AddAccessory(new SteeringServo(STEERING_SERVO));
-    #endif
-  }
-  obj->Setup();
+  else
+    obj = new Tank();
 }
 
-void loop() {
+void loop()
+{
   obj->Update();
 }

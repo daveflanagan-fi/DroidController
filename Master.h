@@ -4,12 +4,13 @@
 #include "Object.h"
 #include "Structs.h"
 
-class Master : public Object {  
-  private:
-    uint32_t _lastList;
-    
-  public:
-    virtual void Update();
+class Master : public Object
+{
+private:
+  uint32_t _lastList;
+
+public:
+  virtual void Update();
 };
 
 #endif

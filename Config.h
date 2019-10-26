@@ -16,7 +16,7 @@
 #define UPDATE_INTERVAL 1000
 #define CONTROL_INTERVAL 100
 #define MAX_WAYPOINTS 20
-#define MAX_ACCESSORIES 5
+#define MAX_COMPONENTS 5
 
 // Accessories -1 is disabled, any other number is connected pin
 #define STEERING_SERVO 9

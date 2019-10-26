@@ -1,7 +1,7 @@
 #ifndef __OBJECT_H__
 #define __OBJECT_H__
 
-#include "Accessory.h"
+#include "Component.h"
 #include <RF24Mesh.h>
 #include <RF24Network.h>
 #include <RF24.h>
@@ -10,15 +10,16 @@
 
 #include "Config.h"
 
-class Object {
-  protected:
-    RF24* _radio;
-    RF24Network* _network;
-    RF24Mesh* _mesh;
+class Object
+{
+protected:
+  RF24 *_radio;
+  RF24Network *_network;
+  RF24Mesh *_mesh;
 
-  public:
-    virtual void Setup();    
-    virtual void Update();
+public:
+  virtual void Setup();
+  virtual void Update();
 };
 
 #endif
