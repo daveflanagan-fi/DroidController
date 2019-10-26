@@ -10,6 +10,7 @@ private:
   uint32_t _lastList;
 
 public:
+  MasterNode();
   virtual void Update();
 };
 

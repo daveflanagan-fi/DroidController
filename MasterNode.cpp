@@ -1,5 +1,10 @@
 #include "MasterNode.h"
 
+MasterNode::MasterNode()
+    : Object(0)
+{
+}
+
 void MasterNode::Update()
 {
   Object::Update();

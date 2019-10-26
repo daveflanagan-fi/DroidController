@@ -1,7 +1,7 @@
 #include "Motor.h"
 #include <Arduino.h>
 
-Motor::Motor(int in1, int in2, int en, Side side)
+Motor::Motor(int in1, int in2, int en, int side)
 {
     _in1 = in1;
     _in2 = in2;

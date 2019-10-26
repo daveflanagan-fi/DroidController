@@ -9,10 +9,10 @@ private:
     int _in1;
     int _in2;
     int _en;
-    Side _side;
+    int _side;
 
 public:
-    Motor(int in1, int in2, int en, Side side);
+    Motor(int in1, int in2, int en, int side);
     void Update(int left, int right, DroidData *data);
 };
 #endif
