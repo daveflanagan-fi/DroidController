@@ -5,6 +5,52 @@ MasterNode::MasterNode()
 {
 }
 
+void MasterNode::Write(int cmd, void *data)
+{
+  if (!_mesh->write(data, cmd, sizeof(data)))
+  {
+    Serial.print("{\"type\":");
+    Serial.print(MSG_ERROR);
+    Serial.println(",\"error\":\"write failed\"}");
+    if (!_mesh->checkConnection())
+    {
+      Serial.print("{\"type\":");
+      Serial.print(MSG_ERROR);
+      Serial.println(",\"error\":\"renewing address\"}");
+      _mesh->renewAddress();
+    }
+    else
+    {
+      Serial.print("{\"type\":");
+      Serial.print(MSG_ERROR);
+      Serial.println(",\"error\":\"test okay\"}");
+    }
+  }
+}
+
+void MasterNode::Write(int cmd, int node, void *data)
+{
+  if (!_mesh->write(node, data, cmd, sizeof(data)))
+  {
+    Serial.print("{\"type\":");
+    Serial.print(MSG_ERROR);
+    Serial.println(",\"error\":\"write failed\"}");
+    if (!_mesh->checkConnection())
+    {
+      Serial.print("{\"type\":");
+      Serial.print(MSG_ERROR);
+      Serial.println(",\"error\":\"renewing address\"}");
+      _mesh->renewAddress();
+    }
+    else
+    {
+      Serial.print("{\"type\":");
+      Serial.print(MSG_ERROR);
+      Serial.println(",\"error\":\"test okay\"}");
+    }
+  }
+}
+
 void MasterNode::Update()
 {
   Object::Update();
@@ -22,25 +68,7 @@ void MasterNode::Update()
       Manual m;
       m.Left = Serial.parseInt();
       m.Right = Serial.parseInt();
-      if (!_mesh->write(node, &m, cmd, sizeof(m)))
-      {
-        Serial.print("{\"type\":");
-        Serial.print(MSG_ERROR);
-        Serial.println(",\"error\":\"write failed\"}");
-        if (!_mesh->checkConnection())
-        {
-          Serial.print("{\"type\":");
-          Serial.print(MSG_ERROR);
-          Serial.println(",\"error\":\"renewing address\"}");
-          _mesh->renewAddress();
-        }
-        else
-        {
-          Serial.print("{\"type\":");
-          Serial.print(MSG_ERROR);
-          Serial.println(",\"error\":\"test okay\"}");
-        }
-      }
+      Write(cmd, node, &m);
       break;
     }
     case MSG_ADD_WAYPOINT:
@@ -49,25 +77,7 @@ void MasterNode::Update()
       Point p;
       p.Latitude = Serial.parseFloat();
       p.Longitude = Serial.parseFloat();
-      if (!_mesh->write(node, &p, cmd, sizeof(p)))
-      {
-        Serial.print("{\"type\":");
-        Serial.print(MSG_ERROR);
-        Serial.println(",\"error\":\"write failed\"}");
-        if (!_mesh->checkConnection())
-        {
-          Serial.print("{\"type\":");
-          Serial.print(MSG_ERROR);
-          Serial.println(",\"error\":\"renewing address\"}");
-          _mesh->renewAddress();
-        }
-        else
-        {
-          Serial.print("{\"type\":");
-          Serial.print(MSG_ERROR);
-          Serial.println(",\"error\":\"test okay\"}");
-        }
-      }
+      Write(cmd, node, &p);
       break;
     }
     case MSG_SEND_ALL:
@@ -75,7 +85,7 @@ void MasterNode::Update()
       Point p;
       p.Latitude = Serial.parseFloat();
       p.Longitude = Serial.parseFloat();
-      _mesh->write(&p, MSG_REP_WAYPOINT, sizeof(Point));
+      Write(cmd, &p);
       break;
     }
     }
