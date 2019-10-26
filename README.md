@@ -10,7 +10,7 @@ Impliment a class inheriting Droid and add some components
 #ifndef __TANK_H__
 #define __TANK_H__
 
-#include <TaaviControl.h>
+#include <DroidController.h>
 
 class Tank : public Droid
 {

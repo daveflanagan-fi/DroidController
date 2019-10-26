@@ -13,8 +13,8 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#ifndef __TAAVI_CONTROL_H__
-#define __TAAVI_CONTROL_H__
+#ifndef __DROID_CONTROLLER_H__
+#define __DROID_CONTROLLER_H__
 
 #include <Arduino.h>
 
