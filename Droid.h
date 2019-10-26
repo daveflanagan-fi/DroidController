@@ -5,7 +5,7 @@
 
 #include "Object.h"
 #include "Structs.h"
-#include "Components.h"
+#include "Component.h"
 
 class Droid : public Object
 {

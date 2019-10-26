@@ -1,0 +1,32 @@
+#######################################
+# Syntax Coloring Map For TaaviControl
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+Droid	KEYWORD1
+MasterNode	KEYWORD1
+Component	KEYWORD1
+Motor	KEYWORD1
+SteeringServo	KEYWORD1
+Point	KEYWORD1
+DroidData	KEYWORD1
+Side	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+LEFT	KEYWORD2
+RIGHT	KEYWORD2
+
+#######################################
+# Instances (KEYWORD2)
+#######################################
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
