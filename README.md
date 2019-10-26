@@ -39,6 +39,23 @@ void Tank::Setup()
 }
 ```
 
+```C++
+#include "Tank.h"
+
+Object *obj;
+
+void setup()
+{
+  Serial.begin(9600);
+  obj = new Tank(1);
+}
+
+void loop()
+{
+  obj->Update();
+}
+```
+
 ## License
 [GNU GPL V3](https://github.com/daveflanagan-fi/DroidController/blob/master/LICENSE)
 
