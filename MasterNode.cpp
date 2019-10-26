@@ -17,13 +17,39 @@ void MasterNode::Update()
     uint16_t node = (uint16_t)Serial.parseInt();
     switch (cmd)
     {
+    case MSG_MANUAL:
+    {
+      Manual m;
+      m.Left = Serial.parseInt();
+      m.Right = Serial.parseInt();
+      if (!_mesh->write(node, &m, cmd, sizeof(m)))
+      {
+        Serial.print("{\"type\":");
+        Serial.print(MSG_ERROR);
+        Serial.println(",\"error\":\"write failed\"}");
+        if (!_mesh->checkConnection())
+        {
+          Serial.print("{\"type\":");
+          Serial.print(MSG_ERROR);
+          Serial.println(",\"error\":\"renewing address\"}");
+          _mesh->renewAddress();
+        }
+        else
+        {
+          Serial.print("{\"type\":");
+          Serial.print(MSG_ERROR);
+          Serial.println(",\"error\":\"test okay\"}");
+        }
+      }
+      break;
+    }
     case MSG_ADD_WAYPOINT:
     case MSG_REP_WAYPOINT:
     {
       Point p;
       p.Latitude = Serial.parseFloat();
       p.Longitude = Serial.parseFloat();
-      if (!_mesh->write(node, &p, cmd, sizeof(Point)))
+      if (!_mesh->write(node, &p, cmd, sizeof(p)))
       {
         Serial.print("{\"type\":");
         Serial.print(MSG_ERROR);

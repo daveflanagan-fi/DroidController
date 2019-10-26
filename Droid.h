@@ -30,6 +30,8 @@ protected:
   double _battMin = 10;
   double _battMax = 12.6;
 
+  bool _manualControl = false;
+
 private:
   SoftwareSerial *_ss;
   UbxGpsNavPvt<SoftwareSerial>* _gps;

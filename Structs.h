@@ -8,7 +8,14 @@
 #define MSG_ADD_WAYPOINT 66
 #define MSG_REP_WAYPOINT 67
 #define MSG_COMPLETE 68
+#define MSG_MANUAL 69
 #define MSG_SEND_ALL 127
+
+struct Manual
+{
+  int Left;
+  int Right;
+};
 
 struct Point
 {

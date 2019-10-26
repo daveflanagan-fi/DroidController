@@ -49,6 +49,7 @@ void Droid::Update()
       break;
     case MSG_ADD_WAYPOINT:
     {
+      _manualControl = false;
       Point point;
       _network->read(header, &point, sizeof(point));
       _waypoints.add(&point);
@@ -56,11 +57,21 @@ void Droid::Update()
     }
     case MSG_REP_WAYPOINT:
     {
+      _manualControl = false;
       Point point;
       _network->read(header, &point, sizeof(point));
       _waypoints.clear();
       _waypoints.add(&point);
       _current = 0;
+      break;
+    }
+    case MSG_MANUAL:
+    {
+      _manualControl = true;
+      Manual manual;
+      _network->read(header, &manual, sizeof(manual));
+      _left = manual.Left;
+      _right = manual.Right;
       break;
     }
     }
@@ -91,7 +102,7 @@ void Droid::FetchData()
 
 void Droid::Control()
 {
-  if (_current >= _waypoints.size())
+  if (_manualControl || _current >= _waypoints.size())
     return;
   
   Point* waypoint = _waypoints.get(_current);
