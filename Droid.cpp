@@ -49,7 +49,6 @@ void Droid::Update()
       break;
     case MSG_ADD_WAYPOINT:
     {
-      _manualControl = false;
       Point point;
       _network->read(header, &point, sizeof(point));
       _waypoints.add(&point);
@@ -57,7 +56,6 @@ void Droid::Update()
     }
     case MSG_REP_WAYPOINT:
     {
-      _manualControl = false;
       Point point;
       _network->read(header, &point, sizeof(point));
       _waypoints.clear();
@@ -67,7 +65,7 @@ void Droid::Update()
     }
     case MSG_MANUAL:
     {
-      _manualControl = true;
+      _manualControlLast = millis();
       Manual manual;
       _network->read(header, &manual, sizeof(manual));
       _left = manual.Left;
@@ -102,47 +100,55 @@ void Droid::FetchData()
 
 void Droid::Control()
 {
-  if (_manualControl || _current >= _waypoints.size())
-    return;
-  
-  Point* waypoint = _waypoints.get(_current);
-  double distance = calculateDistance(_data.Latitude, _data.Longitude, waypoint->Latitude, waypoint->Longitude);
-  _data.Distance = distance;
-  if (distance < _turningRadius)
+  if (millis() - _manualControlLast >= _manualControlTimeout)
   {
-    Serial.println("Moving to next waypoint...");
-    _current++;
-    waypoint = _waypoints.get(_current);
-  }
+    if (_current >= _waypoints.size())
+    {
+      Point *waypoint = _waypoints.get(_current);
+      double distance = calculateDistance(_data.Latitude, _data.Longitude, waypoint->Latitude, waypoint->Longitude);
+      _data.Distance = distance;
+      if (distance < _turningRadius)
+      {
+        Serial.println("Moving to next waypoint...");
+        _current++;
+        waypoint = _waypoints.get(_current);
+      }
 
-  if (_current >= _waypoints.size())
-  {
-    Serial.println("Mission complete, halting...");
-    _mesh->write(0, 0, MSG_COMPLETE, sizeof(0));
-    _left = 0;
-    _right = 0;
-    return;
-  }
+      if (_current >= _waypoints.size())
+      {
+        Serial.println("Mission complete, halting...");
+        _mesh->write(0, 0, MSG_COMPLETE, sizeof(0));
+        _left = 0;
+        _right = 0;
+        return;
+      }
 
-  double desiredHeading = calculateHeading(_data.Latitude, _data.Longitude, waypoint->Latitude, waypoint->Longitude);
+      double desiredHeading = calculateHeading(_data.Latitude, _data.Longitude, waypoint->Latitude, waypoint->Longitude);
 
-  // Handle 359 -> 0 and 0 -> 359 degrees
-  double heading = _data.Heading;
-  if (abs(desiredHeading - heading) > 180)
-  {
-    if (desiredHeading < heading)
-      desiredHeading += 360;
+      // Handle 359 -> 0 and 0 -> 359 degrees
+      double heading = _data.Heading;
+      if (abs(desiredHeading - heading) > 180)
+      {
+        if (desiredHeading < heading)
+          desiredHeading += 360;
+        else
+          heading += 360;
+      }
+
+      uint8_t s = _pidSpeed.step(_targetSpeed, _data.Speed);
+      _left += s;
+      _right += s;
+
+      uint8_t h = _pidHeading.step(desiredHeading, _data.Heading);
+      _left += h;
+      _right -= h;
+    }
     else
-      heading += 360;
+    {
+      _left = 0;
+      _right = 0;
+    }
   }
-
-  uint8_t s = _pidSpeed.step(_targetSpeed, _data.Speed);
-  _left += s;
-  _right += s;
-
-  uint8_t h = _pidHeading.step(desiredHeading, _data.Heading);
-  _left += h;
-  _right -= h;
 
   for (int i = 0; i < _components.size(); i++)
     _components.get(i)->Update(&_left, &_right, &_data);

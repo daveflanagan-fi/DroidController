@@ -30,7 +30,8 @@ protected:
   double _battMin = 10;
   double _battMax = 12.6;
 
-  bool _manualControl = false;
+  int _manualControlTimeout = 1000;
+  long _manualControlLast = 0;
 
 private:
   SoftwareSerial *_ss;
