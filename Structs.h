@@ -39,7 +39,9 @@ struct DroidData
 enum Side
 {
   LEFT,
-  RIGHT
+  RIGHT,
+  FRONT,
+  BACK
 };
 
 #endif

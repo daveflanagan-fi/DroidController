@@ -6,6 +6,6 @@
 class Component
 {
 public:
-  void Update(int left, int right, DroidData *data) {}
+  void Update(int *left, int *right, DroidData *data) {}
 };
 #endif

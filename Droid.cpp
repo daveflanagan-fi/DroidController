@@ -145,7 +145,7 @@ void Droid::Control()
   _right -= h;
 
   for (int i = 0; i < _components.size(); i++)
-    _components.get(i)->Update(_left, _right, &_data);
+    _components.get(i)->Update(&_left, &_right, &_data);
 }
 
 void Droid::Ping()

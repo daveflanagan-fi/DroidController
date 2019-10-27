@@ -13,6 +13,6 @@ private:
 
 public:
     Motor(int in1, int in2, int en, int side);
-    void Update(int left, int right, DroidData *data);
+    void Update(int *left, int *right, DroidData *data);
 };
 #endif

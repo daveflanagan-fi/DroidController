@@ -12,6 +12,6 @@ private:
 
 public:
   SteeringServo(int pin);
-  void Update(int left, int right, DroidData *data);
+  void Update(int *left, int *right, DroidData *data);
 };
 #endif

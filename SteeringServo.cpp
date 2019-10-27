@@ -7,8 +7,8 @@ SteeringServo::SteeringServo(int pin)
   _servo.attach(pin);
 }
 
-void SteeringServo::Update(int left, int right, DroidData *data)
+void SteeringServo::Update(int *left, int *right, DroidData *data)
 {
   Component::Update(left, right, data);
-  _servo.write(map(left - right, -100, 100, 0, 180));
+  _servo.write(map(*left - *right, -100, 100, 0, 180));
 }
