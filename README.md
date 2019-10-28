@@ -9,16 +9,17 @@ Impliment a class inheriting Droid and add some components
 ```C++
 #include <DroidController.h>
 
-Droid droid
+Droid *droid;
 
 void setup() {
-    droid.AddComponent(new UltrasonicSensor(6, 9, FRONT, 10, 100));
-    droid.AddComponent(new Motor(4, 7, 1, LEFT));
-    droid.AddComponent(new Motor(8, 10, 2, RIGHT));
+  droid = new Droid(1);
+  droid->AddComponent(new UltrasonicSensor(6, 9, FRONT, 10, 100));
+  droid->AddComponent(new Motor(4, 7, 1, LEFT));
+  droid->AddComponent(new Motor(8, 10, 2, RIGHT));
 }
 
 void loop() {
-  droid.Update();
+  droid->Update();
 }
 ```
 
