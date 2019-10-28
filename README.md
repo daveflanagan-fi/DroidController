@@ -7,53 +7,18 @@ Arduino software to control a droid with 2 motors connected to an RF24 mesh netw
 Impliment a class inheriting Droid and add some components
 
 ```C++
-#ifndef __TANK_H__
-#define __TANK_H__
-
 #include <DroidController.h>
 
-class Tank : public Droid
-{
-public:
-    Tank(int nodeId);
-    virtual void Setup();
-};
+Droid droid
 
-#endif
-```
-
-```C++
-#include "Tank.h"
-
-Tank::Tank(int nodeId)
-    : Droid(nodeId)
-{
+void setup() {
+    droid.AddComponent(new UltrasonicSensor(6, 9, FRONT, 10, 100));
+    droid.AddComponent(new Motor(4, 7, 1, LEFT));
+    droid.AddComponent(new Motor(8, 10, 2, RIGHT));
 }
 
-void Tank::Setup()
-{
-    Droid::Setup();
-
-    AddComponent(new UltrasonicSensor(6, 9, FRONT, 10, 100));
-    AddComponent(new Motor(4, 7, 1, LEFT));
-    AddComponent(new Motor(8, 10, 2, RIGHT));
-}
-```
-
-```C++
-#include "Tank.h"
-
-Object *obj;
-
-void setup()
-{
-  Serial.begin(9600);
-  obj = new Tank(1);
-}
-
-void loop()
-{
-  obj->Update();
+void loop() {
+  droid.Update();
 }
 ```
 
