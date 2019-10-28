@@ -23,5 +23,6 @@
 
 #include "Motor.h"
 #include "SteeringServo.h"
+#include "UltrasonicSensor.h"
 
 #endif

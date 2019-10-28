@@ -34,8 +34,9 @@ void Tank::Setup()
 {
     Droid::Setup();
 
-    AddComponent(new Motor(4, 7, 1, 0));
-    AddComponent(new Motor(8, 10, 2, 1));
+    AddComponent(new UltrasonicSensor(6, 9, FRONT, 10, 100));
+    AddComponent(new Motor(4, 7, 1, LEFT));
+    AddComponent(new Motor(8, 10, 2, RIGHT));
 }
 ```
 
